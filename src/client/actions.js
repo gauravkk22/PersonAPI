@@ -1,87 +1,142 @@
-import personApi from './api/personApi'
-import axios from 'axios'
-import {fromJS, List} from 'immutable'
+import axios from 'axios';
+import {fromJS, List} from 'immutable';
 
+function getURL(apiOption){
+	let url;
+	if(apiOption === 'starfish'){
+		url = 'http://interview.starfishsolutions.com:8000/person';
+	}else if(apiOption === 'localhost'){
+		url = 'http://localhost:8000/person';
+	}
+
+	return url;
+}
 
 export function setState(state) {
 	return {
 		type: 'SET_STATE',
 		state
-	}
+	};
 }
 
-// export function search(id){
-// 	return {
-// 		type: 'SEARCH',
-// 		id
-// 	}
-// }
+export function setAPI(api) {
+	return {
+		type: 'SET_API',
+		api
+	};
+}
+
+export function reset(){
+	return {
+		type: 'RESET'
+	};
+}
 
 export function create(obj){
-	return {
-		type: 'CREATE',
-		obj
+	return (dispatch, getState) => {
+		const state = getState();
+		const url = getURL(state.get('API'));
+
+		axios.post(url,{
+			"name": obj.name,
+			"age" : parseInt(obj.age)
+		})
+		.then(res =>{
+			console.log(res)
+			dispatch(loadAll())
+		})
+		.catch(err =>{
+			console.log(err)
+		}
+		)
 	}
 }
 
-// export function search(id){
-// 	return function(dispatch) {
-// 		return personApi.getAllPersons().then(persons =>{
-// 			dispatch(setState(persons))
-// 		}).catch(error => {
-// 			throw(error)
-// 		})
-// 	}
-// }
+export function connectDB(){
+	return (dispatch, getState) => {
+		const state = getState();
+
+		axios.get('http://localhost:8000/connectDB')
+			.then(res => {
+				let connected = false;
+				if(res.data.connect !== 'fail'){
+					console.log('connected~~~')
+					connected = true
+				}
+				dispatch(setState( 
+					state.merge({localAPIAvailable: connected})
+				))
+			})
+			.catch(err => {
+				console.log(err);
+			})
+
+	}
+}
+
+
+export function deletePerson(id){
+	return (dispatch, getState) =>{
+		const state = getState();
+		const url   = getURL(state.get('API'));
+
+		axios.delete(url+'/'+id)
+			.then(res =>{
+				dispatch(loadAll())
+			})
+			.catch(err =>{
+				console.log(err)
+			})
+	}
+}
+
+export function editPerson(obj){
+	return (dispatch, getState) => {
+		const state = getState();
+		const url   = getURL(state.get('API'));
+
+		axios.put(url+'/'+obj.id,{
+			name: obj.name,
+			age: parseInt(obj.age)
+		})
+		.then(res =>{
+			dispatch(loadAll())
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	}  
+}
 
 export function search(id){
 	return (dispatch, getState) =>{
-		// console.log('http://localhost:8000/person/'+id)
-		axios.get('http://localhost:8000/person/'+id)
+		const state = getState();
+		const url = getURL(state.get('API'));
+		axios.get(url+'/'+id)
 			.then(res => {
-				const state = getState()
-				// console.log(res.data)
-				// console.log(List.of(res.data))
-				// const state = getState()
-				// console.log(state)
-				// console.log(state.toJS())
-				// console.log('---------------------------')
-				// console.log(state.remove('list'))
-				// console.log(state.remove('list')
-								 // .merge({list:List.of(res.data)}))
-				// console.log(state.remove('list')
-								 // .merge({list:List.of(res.data)}).toJS())
-				// console.log('===========================')
 				dispatch(setState(
-					state.merge({list:res.data})
-				))
-
-				// console.log(state.toJS())
-				// console.log(state.merge({list:List.of(res.data)}).toJS())
-				// console.log(state.merge(state.merge({list:List.of(res.data)})).toJS())
+					state.merge({list:[res.data]})
+				));
 			})
 			.catch(err => {
-				console.log(err)
+				console.log(err);
 			})
 
 	}
 }
 
-
-
 export function loadAll(){
 	return (dispatch, getState) =>{
-		
-		axios.get('http://localhost:8000/person')
+		const state = getState();
+		const url = getURL(state.get('API'));
+		axios.get(url)
 			.then(res =>{
-				const state = getState()
-				// console.log(state.merge({list:res.data}))
 				dispatch(setState(
-					state.merge({list:res.data})
-				))
+					state.merge({list:res.data.list})
+				));
 			})
 			.catch(err=>{
-				console.log(err)
+				console.log(err);
 			})
 	}
 }

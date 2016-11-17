@@ -1,5 +1,5 @@
-var mongoose   = require('mongoose')
-var Schema     = mongoose.Schema
-var feedSchema = new Schema({}, {strict:false})
+var mongoose   = require('mongoose');
+var Schema     = mongoose.Schema;
+var feedSchema = new Schema({}, {strict:false});
 
-module.exports = mongoose.model('Person', feedSchema)
+module.exports = mongoose.model('Person', feedSchema);

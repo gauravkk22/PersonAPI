@@ -1,50 +1,83 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {Form, 
 		FormGroup, 
 		ControlLabel, 
 		FormControl, 
 		Button,
-		Col} from 'react-bootstrap'
+		Col,
+		ButtonToolbar} from 'react-bootstrap';
 
 class controlPanel extends Component {
 
 	constructor(){
-		super()
+		super();
 		this.state ={
 			searchId:'',
 			createName:'',
 			createAge: ''
-		}
-		this.search = this.search.bind(this)
-		this.create = this.create.bind(this)
-		this.updateInputValue= this.updateInputValue.bind(this)
+		};
+		this.search = this.search.bind(this);
+		this.create = this.create.bind(this);
+		this.updateInputValue= this.updateInputValue.bind(this);
 	}
 
 	search(e){
-		e.preventDefault()
-		this.setState({'searchId': ''})
+		e.preventDefault();
+		if(this.state.searchId === ''){
+			this.props.loadAll();
+		}else{
+			this.props.search(this.state.searchId);
+			this.setState({'searchId': ''});
+		}
 	}
 
 	create(e){
-		e.preventDefault()
+		e.preventDefault();
+		this.props.create({
+			name: this.state.createName,
+			age : this.state.createAge
+		})
+	
 		this.setState({'createName': '',
-					   'createAge' : ''})
+					   'createAge' : ''});
 	}
 
 	updateInputValue(name, e){
-		let change ={}
-		change[name] = e.target.value
-		this.setState(change)
+		let change ={};
+		change[name] = e.target.value;
+		this.setState(change);
 	}
 
 	render() {
 		return (
 			<div className='well'>
+				<h4>API</h4>
+				<p>Current: {this.props.api}</p>
+				<ButtonToolbar>
+					<Button bsSize='small'
+							bsStyle='primary'
+							onClick={()=>{
+								this.props.setAPI('starfish');
+								this.props.reset();} }>
+						Startfish
+					</Button>
+					<Button bsSize='small'
+							bsStyle='primary'
+							onClick={()=>{
+								this.props.setAPI('localhost');
+								this.props.reset();
+								this.props.connectDB();} }>
+						Localhost
+					</Button>
+				</ButtonToolbar>
+
+				<hr/>
+
 				<Form horizontal>
 					<h4>Search</h4>
 					<FormGroup controlId="searchId">
 						<Col componentClass={ControlLabel} sm={1}>
-							Name
+							ID
 						</Col>
 						<Col sm={11}>
 							<FormControl type='id'
@@ -69,7 +102,7 @@ class controlPanel extends Component {
 							Name
 						</Col>
 						<Col sm={11}>
-							<FormControl type='name' 
+							<FormControl type='text' 
 										 placeholder='Name' 
 										 value={this.state.createName}
 										 onChange={this.updateInputValue.bind(this, 'createName')}/>
@@ -80,7 +113,7 @@ class controlPanel extends Component {
 							Age
 						</Col>
 						<Col sm={11}>
-							<FormControl type='age' 
+							<FormControl type='number' 
 										 placeholder='Age' 
 										 value={this.state.createAge}
 										 onChange={this.updateInputValue.bind(this, 'createAge')}/>
@@ -97,4 +130,4 @@ class controlPanel extends Component {
 	}
 }
 
-export default controlPanel
+export default controlPanel;

@@ -1,14 +1,13 @@
-const Person = require('../../models/person')
+const Person = require('../../models/person');
 
 module.exports = (req, res) => {
 
-	const id = req.params.id.toString()
-
+	const id = req.params.id.toString();
 	Person.remove({"_id": id}, (err, data) =>{
 		if(err){
-			res.send(err)
+			res.send(err);
 		}else{
-			res.status(200).json(data)
+			res.status(200).json(data);
 		}
 	})
 }

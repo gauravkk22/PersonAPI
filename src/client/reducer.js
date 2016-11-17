@@ -1,23 +1,31 @@
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable';
+
+const INITIAL_STATE = fromJS({
+	API: "starfish",
+	localAPIAvailable: false,
+});
 
 function setState(state, newState){
-	console.log(newState)
-	console.log(newState.toJS())
-	console.log(state.toJS())
-	console.log(state.merge(newState).toJS())
-	return state.merge(newState)
+	return state.merge(newState);
 }
 
+function setAPI(state, api){
+	return state.merge({API:api});
+}
 
-export default function(state = Map(), action) {
+function reset(state){
+	return state.remove('list');
+}
+
+export default function(state = INITIAL_STATE, action) {
 
 	switch(action.type){
 		case 'SET_STATE':
 			return setState(state, action.state)
-		// case 'CREATE':
-		// 	return create(state, action.object)
-		// case 'SEARCH':
-		// 	return search(state, action.id)
+		case 'SET_API':
+			return setAPI(state, action.api)
+		case 'RESET':
+			return reset(state)
 	}
-	return state
+	return state;
 }
