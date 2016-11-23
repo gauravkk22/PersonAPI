@@ -3,8 +3,8 @@ import {fromJS, List} from 'immutable';
 
 function getURL(apiOption){
 	let url;
-	if(apiOption === 'starfish'){
-		url = 'http://interview.starfishsolutions.com:8000/person';
+	if(apiOption === ''){
+		url = '';
 	}else if(apiOption === 'localhost'){
 		url = 'http://localhost:8000/person';
 	}

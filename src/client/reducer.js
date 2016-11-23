@@ -1,7 +1,7 @@
 import {Map, fromJS} from 'immutable';
 
 const INITIAL_STATE = fromJS({
-	API: "starfish",
+	API: "",
 	localAPIAvailable: false,
 });
 

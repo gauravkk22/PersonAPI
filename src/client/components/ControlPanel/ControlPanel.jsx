@@ -57,13 +57,6 @@ class controlPanel extends Component {
 					<Button bsSize='small'
 							bsStyle='primary'
 							onClick={()=>{
-								this.props.setAPI('starfish');
-								this.props.reset();} }>
-						Startfish
-					</Button>
-					<Button bsSize='small'
-							bsStyle='primary'
-							onClick={()=>{
 								this.props.setAPI('localhost');
 								this.props.reset();
 								this.props.connectDB();} }>

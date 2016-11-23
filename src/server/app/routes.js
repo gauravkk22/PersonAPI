@@ -1,4 +1,4 @@
-const api      = require('./startfishAPI');
+const api      = require('./personAPI');
 const mongoose = require('mongoose');
 
 // config file
