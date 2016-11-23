@@ -21549,7 +21549,7 @@
 	var _immutable = __webpack_require__(190);
 
 	var INITIAL_STATE = (0, _immutable.fromJS)({
-		API: "starfish",
+		API: "",
 		localAPIAvailable: false
 	});
 
@@ -26633,8 +26633,8 @@
 
 	function getURL(apiOption) {
 		var url = void 0;
-		if (apiOption === 'starfish') {
-			url = 'http://interview.starfishsolutions.com:8000/person';
+		if (apiOption === '') {
+			url = '';
 		} else if (apiOption === 'localhost') {
 			url = 'http://localhost:8000/person';
 		}
@@ -47559,16 +47559,6 @@
 							{ bsSize: 'small',
 								bsStyle: 'primary',
 								onClick: function onClick() {
-									_this2.props.setAPI('starfish');
-									_this2.props.reset();
-								} },
-							'Startfish'
-						),
-						_react2.default.createElement(
-							_reactBootstrap.Button,
-							{ bsSize: 'small',
-								bsStyle: 'primary',
-								onClick: function onClick() {
 									_this2.props.setAPI('localhost');
 									_this2.props.reset();
 									_this2.props.connectDB();
@@ -48248,18 +48238,38 @@
 						_react2.default.createElement(
 							'strong',
 							null,
-							'API Host'
+							'API List'
 						)
 					),
 					_react2.default.createElement(
 						'h5',
 						null,
-						'- starfish: http://interview.starfishsolutions.com:8000/person'
+						'- localhost: http://localhost:8000/person'
 					),
 					_react2.default.createElement(
 						'h5',
 						null,
-						'- localhost: http://localhost:8000/person'
+						'-- GET:    /person'
+					),
+					_react2.default.createElement(
+						'h5',
+						null,
+						'-- GET:    /person/:id'
+					),
+					_react2.default.createElement(
+						'h5',
+						null,
+						'-- POST:   /person'
+					),
+					_react2.default.createElement(
+						'h5',
+						null,
+						'-- PUT:    /person/:id'
+					),
+					_react2.default.createElement(
+						'h5',
+						null,
+						'-- DELETE: /person/:id'
 					),
 					_react2.default.createElement(
 						'h4',
